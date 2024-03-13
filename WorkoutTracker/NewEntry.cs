@@ -21,7 +21,7 @@ namespace WorkoutTracker
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            woEntry.EntryDate = D;
+            woEntry.EntryDate = dateTimePicker1.Value;
         }
 
         private bool isFormValid()
