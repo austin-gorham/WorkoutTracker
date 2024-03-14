@@ -13,13 +13,20 @@ namespace WorkoutTracker
 {
     public partial class frmNewEntry : Form
     {
-        private WorkoutEntry woEntry = null!;
+        private WorkoutEntry? woEntry = null;
 
         public frmNewEntry()
         {
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// form on load event handler;
+        /// initializes the weight unit combo boxes' items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmNewEntry_Load(object sender, EventArgs e)
         {
             foreach (WeightUnit wu in Enum.GetValues(typeof(WeightUnit)))
@@ -29,16 +36,31 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// function to call to get a new WorkoutEntry object created from this form;
+        /// returns object if form was saved;
+        /// returns null if form was cancelled
+        /// </summary>
+        /// <returns>the WorkoutEntry if saved; null if form was cancelled</returns>
         public WorkoutEntry GetNewEntry()
         {
             this.ShowDialog();
-            return woEntry;
+            return woEntry!;
         }
 
+        /// <summary>
+        /// Save button event handler;
+        /// Validates the data currently entered in the form;
+        /// if valid, builds the WorkoutEntry object to pass on and closes the form;
+        /// else does nothing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (IsDataValid())
             {
+                //WorkoutEntry property initialization
                 woEntry = new()
                 {
                     EntryDate = dtpWorkoutDate.Value,
@@ -46,7 +68,7 @@ namespace WorkoutTracker
                         (WeightUnit)cbbBodyWeightUnit.SelectedIndex)
                 };
 
-
+                //Adding the exercise entry
                 woEntry.ExerciseEntries.Add(new()
                 {
                     Name = txtExerciseName.Text,
@@ -62,57 +84,64 @@ namespace WorkoutTracker
         }
 
 
-
+        /// <summary>
+        /// Data validation for each of the form's inputs;
+        /// checking if present, valid number, etc
+        /// displays an error message denoting issues and returns false if any error is found;
+        /// returns true if no errors are found
+        /// </summary>
+        /// <returns>whether or not the data is valid</returns>
         private bool IsDataValid()
         {
-
+            //Errors to display in message for user to correct
+            //Adds a message for each failed validation
             string errors = "";
 
             //Body Weight Amount
-            if (!IsPresent(txtBodyWeightAmt.Text))
+            if (!Validator.IsPresent(txtBodyWeightAmt.Text))
                 errors += "'Body weight amount' must be present\n";
-            else if (!IsDecimal(txtBodyWeightAmt.Text) || !IsNotNegative(Convert.ToDecimal(txtBodyWeightAmt.Text)))
+            else if (!Validator.IsDecimal(txtBodyWeightAmt.Text) || !Validator.IsNotNegative(Convert.ToDecimal(txtBodyWeightAmt.Text)))
                 errors += "'Body weight amount' must be a non-negative number\n";
 
             //Body Weight Unit
-            if (!IsPresent(cbbBodyWeightUnit.Text))
+            if (!Validator.IsPresent(cbbBodyWeightUnit.Text))
                 errors += "'Body weight unit' must be present\n";
-            else if (!IsValidWeightUnit(cbbBodyWeightUnit.SelectedIndex))
+            else if (!Validator.IsValidWeightUnit(cbbBodyWeightUnit.SelectedIndex))
                 errors += "'Body weight unit' must be a valid weight unit\n";
 
             //ExerciseName
-            if (!IsPresent(txtExerciseName.Text))
+            if (!Validator.IsPresent(txtExerciseName.Text))
                 errors += "'Exercise name' must be present\n";
 
             //Set Count
-            if (!IsPresent(txtExerciseSetCt.Text))
+            if (!Validator.IsPresent(txtExerciseSetCt.Text))
                 errors += "'Set count' must be present\n";
-            else if (!IsInt(txtExerciseSetCt.Text) || !IsNotNegative(Convert.ToInt32(txtExerciseSetCt.Text)))
+            else if (!Validator.IsInt(txtExerciseSetCt.Text) || !Validator.IsNotNegative(Convert.ToInt32(txtExerciseSetCt.Text)))
                 errors += "'Set count' must be a non-negative integer\n";
 
             //Rep Count
-            if (!IsPresent(txtExerciseRepCt.Text))
+            if (!Validator.IsPresent(txtExerciseRepCt.Text))
                 errors += "'Rep count' must be present\n";
-            else if (!IsInt(txtExerciseRepCt.Text) || !IsNotNegative(Convert.ToInt32(txtExerciseRepCt.Text)))
+            else if (!Validator.IsInt(txtExerciseRepCt.Text) || !Validator.IsNotNegative(Convert.ToInt32(txtExerciseRepCt.Text)))
                 errors += "'Rep count' must be a non-negative integer\n";
 
 
             //Set Count
-            if (!IsPresent(txtExerciseExRepCt.Text))
+            if (!Validator.IsPresent(txtExerciseExRepCt.Text))
                 errors += "'Excess rep count' must be present\n";
-            else if (!IsInt(txtExerciseExRepCt.Text) || !IsNotNegative(Convert.ToInt32(txtExerciseExRepCt.Text)))
+            else if (!Validator.IsInt(txtExerciseExRepCt.Text) || !Validator.IsNotNegative(Convert.ToInt32(txtExerciseExRepCt.Text)))
                 errors += "'Excess rep count' must be a non-negative integer\n";
 
             //Exercise Weight Amount
-            if (!IsPresent(txtExerciseWeightAmt.Text))
+            if (!Validator.IsPresent(txtExerciseWeightAmt.Text))
                 errors += "'Exercise weight amount' must be present\n";
-            else if (!IsDecimal(txtExerciseWeightAmt.Text) || !IsNotNegative(Convert.ToDecimal(txtExerciseWeightAmt.Text)))
+            else if (!Validator.IsDecimal(txtExerciseWeightAmt.Text) || !Validator.IsNotNegative(Convert.ToDecimal(txtExerciseWeightAmt.Text)))
                 errors += "'Exercise weight amount' must be a non-negative number\n";
 
             //Exercise Weight Unit
-            if (!IsPresent(cbbExerciseWeightUnit.Text))
+            if (!Validator.IsPresent(cbbExerciseWeightUnit.Text))
                 errors += "'Exercise weight unit' must be present\n";
-            else if (!IsValidWeightUnit(cbbExerciseWeightUnit.SelectedIndex))
+            else if (!Validator.IsValidWeightUnit(cbbExerciseWeightUnit.SelectedIndex))
                 errors += "'Exercise weight unit' must be a valid weight unit\n";
 
 
@@ -123,14 +152,5 @@ namespace WorkoutTracker
             }
             return true;
         }
-
-        private static bool IsPresent(string s) => s != String.Empty;
-        private static bool IsInt(string s) => Int32.TryParse(s, out _);
-        private static bool IsDecimal(string s) => Decimal.TryParse(s, out _);
-        private static bool IsNotNegative(int i) => i >= 0;
-        private static bool IsNotNegative(decimal d) => d >= 0;
-        private static bool IsValidWeightUnit(int i) => Enum.IsDefined(typeof(WeightUnit), (WeightUnit)i);
-
-
     }
 }

@@ -8,6 +8,9 @@ namespace WorkoutTracker
 {
     public record struct WeightAmt 
     {
+        /// <summary>
+        /// Units of weight, use dictionary for conversion factors
+        /// </summary>
         public enum WeightUnit
         {
             GRAMS,
@@ -16,19 +19,20 @@ namespace WorkoutTracker
             POUNDS
         }
 
-        private decimal amount;
-        private WeightUnit unit;
+        private decimal amount = 0;
+        private WeightUnit unit = WeightUnit.GRAMS;
 
-        public WeightAmt () 
-        {
-            this.Amount = 0;
-            this.Unit = WeightUnit.GRAMS;
-        }
+        public WeightAmt() { }
 
         public WeightAmt (decimal amount, WeightUnit unit) =>
             (this.Amount, this.Unit) = (amount, unit);
 
-        public decimal Amount { 
+        /// <summary>
+        /// Numeric part of a weight amount;
+        /// decimal; cannot be negative
+        /// </summary>
+        public decimal Amount 
+        { 
             get => amount;
             set
             {
@@ -38,6 +42,11 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// Unit part of the weight amount;
+        /// uses the WeightUnit enum and must be a defined value of such;
+        /// (math teachers everywhere breath a sigh of relief)
+        /// </summary>
         public WeightUnit Unit
         {
             get => unit;
@@ -60,7 +69,9 @@ namespace WorkoutTracker
             }}";
 
 
-
+        /// <summary>
+        /// Dictionary for conversion factors of the weight units
+        /// </summary>
         public static readonly Dictionary<WeightUnit, decimal> UnitInGrams = new()
         {
             { WeightUnit.GRAMS, 1m },

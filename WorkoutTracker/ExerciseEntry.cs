@@ -21,6 +21,10 @@ namespace WorkoutTracker
         public ExerciseEntry(string name) =>
             this.Name = name;
 
+        /// <summary>
+        /// Name of the exercise (e.g. push-ups, squats);
+        /// cannot be null or empty
+        /// </summary>
         public required string Name
         {
             get => name;
@@ -32,6 +36,10 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// Number of sets performed;
+        /// integer; cannot be negative
+        /// </summary>
         public int SetCount
         {
             get => setCount;
@@ -43,6 +51,10 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// Number of reps per set performed;
+        /// integer; cannot be negative
+        /// </summary>
         public int RepCount
         {
             get => repCount;
@@ -54,6 +66,10 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// Number of excess reps performed;
+        /// integer; cannot be negative
+        /// </summary>
         public int ExcessRepCount
         {
             get => excessRepCount;
@@ -65,6 +81,10 @@ namespace WorkoutTracker
             }
         }
 
+        /// <summary>
+        /// Weight amount for the exercise;
+        /// WeightAmt object
+        /// </summary>
         public WeightAmt WeightAmount { get; set; }
 
         public override string ToString()

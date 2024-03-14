@@ -9,17 +9,25 @@ namespace WorkoutTracker
 {
     public class WorkoutEntry
     {
-        //private DateTime entryDate = new();
-        //private WeightAmt bodyWeight = new();
-        //private List<ExerciseEntry> exercizeEntries;
 
         public WorkoutEntry()
         {
             ExerciseEntries = new();
         }
 
+        /// <summary>
+        /// Date of the workout
+        /// </summary>
         public DateTime EntryDate { get; set; }
+
+        /// <summary>
+        /// Weight of person working out
+        /// </summary>
         public WeightAmt BodyWeight {  get; set; }
+
+        /// <summary>
+        /// List of exercises performed
+        /// </summary>
         public List<ExerciseEntry> ExerciseEntries { get; set; }
 
         
@@ -27,9 +35,11 @@ namespace WorkoutTracker
         {
             string date = String.Format("{0:M/d/yy}", EntryDate);
             string bWeight = this.BodyWeight.ToString();
-            string exercises = "";
+            string exercises = "{";
             foreach (var entry in ExerciseEntries) 
-                exercises += "\n\t" + entry.ToString();
+                exercises += entry.ToString() + ",";
+            exercises = exercises.TrimEnd(',');
+            exercises += "}";
             return $"{date}, [{bWeight}]{exercises}";
         }
     }
