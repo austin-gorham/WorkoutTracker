@@ -1,7 +1,7 @@
 ﻿
 namespace WorkoutTracker
 {
-    partial class LogManager
+    partial class frmLogManager
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,20 +29,20 @@ namespace WorkoutTracker
         /// </summary>
         private void InitializeComponent()
         {
-            listBox1 = new ListBox();
+            lstExerciseLog = new ListBox();
             btnAdd = new Button();
             btnEdit = new Button();
             btnDelete = new Button();
             SuspendLayout();
             // 
-            // listBox1
+            // lstExerciseLog
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(54, 52);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(262, 349);
-            listBox1.TabIndex = 0;
+            lstExerciseLog.FormattingEnabled = true;
+            lstExerciseLog.ItemHeight = 15;
+            lstExerciseLog.Location = new Point(54, 52);
+            lstExerciseLog.Name = "lstExerciseLog";
+            lstExerciseLog.Size = new Size(262, 349);
+            lstExerciseLog.TabIndex = 0;
             // 
             // btnAdd
             // 
@@ -52,7 +52,7 @@ namespace WorkoutTracker
             btnAdd.TabIndex = 1;
             btnAdd.Text = "Add New";
             btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += this.btnAdd_Click;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnEdit
             // 
@@ -62,6 +62,7 @@ namespace WorkoutTracker
             btnEdit.TabIndex = 2;
             btnEdit.Text = "Edit";
             btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += btnEdit_Click;
             // 
             // btnDelete
             // 
@@ -72,7 +73,7 @@ namespace WorkoutTracker
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
             // 
-            // LogManager
+            // frmLogManager
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -80,8 +81,8 @@ namespace WorkoutTracker
             Controls.Add(btnDelete);
             Controls.Add(btnEdit);
             Controls.Add(btnAdd);
-            Controls.Add(listBox1);
-            Name = "LogManager";
+            Controls.Add(lstExerciseLog);
+            Name = "frmLogManager";
             Text = "Exercise Log Manager";
             ResumeLayout(false);
         }
@@ -90,7 +91,7 @@ namespace WorkoutTracker
 
         #endregion
 
-        private ListBox listBox1;
+        private ListBox lstExerciseLog;
         private Button btnAdd;
         private Button btnEdit;
         private Button btnDelete;

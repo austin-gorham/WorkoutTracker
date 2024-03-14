@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WorkoutTracker
 {
-    internal class ExerciseEntry
+    public class ExerciseEntry
     {
         private string name = "";
         private int 
@@ -27,8 +27,8 @@ namespace WorkoutTracker
             get => name;
             set
             {
-                if (name == String.Empty)
-                    throw new ArgumentException("Name must not be empty");
+                if (value == String.Empty)
+                    throw new ArgumentException("Must not be empty",nameof(Name));
                 name = value;
             }
         }
@@ -39,7 +39,7 @@ namespace WorkoutTracker
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("SetCount cannot be less than 0");
+                    throw new ArgumentOutOfRangeException(nameof(SetCount),value,"Cannot be less than 0");
                 setCount = value;
             }
         }
@@ -50,7 +50,7 @@ namespace WorkoutTracker
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("RepCount cannot be less than 0");
+                    throw new ArgumentOutOfRangeException(nameof(RepCount), value, "Cannot be less than 0");
                 repCount = value;
             }
         }
@@ -61,12 +61,17 @@ namespace WorkoutTracker
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("ExcessRepCount cannot be less than 0");
+                    throw new ArgumentOutOfRangeException(nameof(ExcessRepCount), value, "Cannot be less than 0");
                 excessRepCount = value;
             }
         }
 
         public WeightAmt WeightAmount { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} [{SetCount}*{RepCount}+{ExcessRepCount}@{WeightAmount}]";
+        }
 
     }
 }
