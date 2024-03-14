@@ -43,18 +43,12 @@ namespace WorkoutTracker
             get => unit;
             set
             {
-                int upperBound = sizeof(WeightUnit) - 1;
-                if (value > (WeightUnit)upperBound || value < (WeightUnit)0)
-                    throw new ArgumentOutOfRangeException(nameof(Unit), value, $"Must be between 0 and {upperBound}, inclusive");
-                unit = value;
+                if (Enum.IsDefined(typeof(WeightUnit),value))
+                    unit = value;
+                else 
+                    throw new ArgumentException("Must be a defined enum value", nameof(WeightUnit));
             }
         }
-
-        /*public bool isValidWeightUnitInt(int i)
-        {
-            int upperBound = sizeof(WeightUnit) - 1;
-            return i <= upperBound && i >= 0;
-        }*/
 
         public override string ToString() =>
             $"{this.Amount}{ this.unit switch {

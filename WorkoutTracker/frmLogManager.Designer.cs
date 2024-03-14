@@ -84,6 +84,7 @@ namespace WorkoutTracker
             Controls.Add(lstExerciseLog);
             Name = "frmLogManager";
             Text = "Exercise Log Manager";
+            Load += frmLogManager_Load;
             ResumeLayout(false);
         }
 

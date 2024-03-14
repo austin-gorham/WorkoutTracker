@@ -125,7 +125,7 @@
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
-            // NewEntry
+            // frmNewEntry
             // 
             AcceptButton = btnSave;
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -143,8 +143,9 @@
             Controls.Add(dtpWorkoutDate);
             Controls.Add(cbbBodyWeightUnit);
             Controls.Add(txtBodyWeightAmt);
-            Name = "NewEntry";
+            Name = "frmNewEntry";
             Text = "NewEntry";
+            Load += frmNewEntry_Load;
             ResumeLayout(false);
             PerformLayout();
         }

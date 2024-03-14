@@ -14,7 +14,6 @@ namespace WorkoutTracker
             setCount = 0, 
             repCount = 0, 
             excessRepCount = 0;
-        private WeightAmt weightAmount = new();
 
         public ExerciseEntry() { }
 

@@ -1,3 +1,6 @@
+
+
+
 namespace WorkoutTracker
 {
     public partial class frmLogManager : Form
@@ -9,10 +12,14 @@ namespace WorkoutTracker
             InitializeComponent();
         }
 
+        private void frmLogManager_Load(object sender, EventArgs e)
+        {
+  
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            frmNewEntry newEntryForm = new frmNewEntry();
+            frmNewEntry newEntryForm = new();
             entries.Add(newEntryForm.GetNewEntry());
             this.UpdateLogView();
         }
@@ -28,7 +35,9 @@ namespace WorkoutTracker
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            
+
         }
+
+
     }
 }
