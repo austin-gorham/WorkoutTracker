@@ -14,6 +14,7 @@ namespace WorkoutTracker
     public partial class frmNewEntry : Form
     {
         private WorkoutEntry? woEntry = null;
+        SortedSet<DateTime>? datesExistingEntries = null;
 
         public frmNewEntry()
         {
@@ -38,12 +39,16 @@ namespace WorkoutTracker
 
         /// <summary>
         /// function to call to get a new WorkoutEntry object created from this form;
+        /// takes list of dates to check if new entry will overwrite existing
         /// returns object if form was saved;
         /// returns null if form was cancelled
         /// </summary>
+        /// <param name="dates">dates to check against if already exist and warn user of overwrite; pass null to bypass check</param>
         /// <returns>the WorkoutEntry if saved; null if form was cancelled</returns>
-        public WorkoutEntry GetNewEntry()
+        public WorkoutEntry GetNewEntry(IList<DateTime>? dates)
         {
+            if (dates != null)
+                this.datesExistingEntries = new SortedSet<DateTime>(dates);
             this.ShowDialog();
             return woEntry!;
         }
@@ -58,12 +63,12 @@ namespace WorkoutTracker
         /// <param name="e"></param>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (IsDataValid())
+            if (IsDataValid() && shouldSaveEntry())
             {
                 //WorkoutEntry property initialization
                 woEntry = new()
                 {
-                    EntryDate = dtpWorkoutDate.Value,
+                    EntryDate = dtpWorkoutDate.Value.Date,
                     BodyWeight = new WeightAmt(Convert.ToDecimal(txtBodyWeightAmt.Text),
                         (WeightUnit)cbbBodyWeightUnit.SelectedIndex)
                 };
@@ -81,6 +86,28 @@ namespace WorkoutTracker
 
                 this.Close();
             }
+        }
+
+        /// <summary>
+        /// Checks if the entry date already exists,
+        /// if so, asks the user if they want to overwrite and returns response
+        /// if date doesn't exist, returns true
+        /// </summary>
+        /// <returns>whether or not an entry should be saved based on another entry having a date, and whether user wants to overwrite</returns>
+        private bool shouldSaveEntry()
+        {
+            if (datesExistingEntries is not null && 
+                datesExistingEntries.Contains(dtpWorkoutDate.Value.Date))
+            {
+                    return DialogResult.Yes ==
+                        MessageBox.Show(
+                        "This date already contains a workout entry.  Proceeding will overwrite the existing entry.\n\nWoud you like to continue?",
+                        "Overwrite Entry?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2);
+            }
+            return true;
         }
 
 
