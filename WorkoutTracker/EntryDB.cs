@@ -19,9 +19,9 @@ namespace WorkoutTracker
 
         const string sep = ",";
 
-        public static SortedList<DateTime,WorkoutEntry> getEntries() 
+        public static WorkoutLog getEntries() 
         {
-            SortedList<DateTime, WorkoutEntry> entries = new();
+            WorkoutLog entries = new();
 
             using (StreamReader woReader = new(
                 new FileStream(woEntryPath,FileMode.OpenOrCreate,FileAccess.Read) ) )
@@ -39,7 +39,7 @@ namespace WorkoutTracker
                             EntryDate = date,
                             BodyWeight = WeightAmt.Parse(fields[1])
                         };
-                        entries.Add(date, entry);
+                        entries.Add(entry);
                     }
                 }
             }
@@ -71,6 +71,7 @@ namespace WorkoutTracker
             return entries;
         }
 
+        //TODO: swap over to workout log?
         public static void saveEntries(IEnumerable<WorkoutEntry> entries)
         {
             using (StreamWriter woWriter = new(

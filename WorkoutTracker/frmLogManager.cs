@@ -7,7 +7,7 @@ namespace WorkoutTracker
 {
     public partial class frmLogManager : Form
     {
-        private SortedList<DateTime,WorkoutEntry> entries = [];
+        private WorkoutLog entries = [];
 
         public frmLogManager()
         {
