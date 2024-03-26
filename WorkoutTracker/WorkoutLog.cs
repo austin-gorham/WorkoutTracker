@@ -7,17 +7,32 @@ using System.Threading.Tasks;
 
 namespace WorkoutTracker
 {
-    internal class WorkoutLog : IEnumerable<WorkoutEntry>, ICollection<WorkoutEntry>
+    public class WorkoutLog : IEnumerable<WorkoutEntry>, ICollection<WorkoutEntry>
     {
-        private List<WorkoutEntry> entries;
+        private SortedList<DateTime,WorkoutEntry> entries;
 
         public WorkoutLog() => entries = [];
         //TODO: more constructors?
 
-        public void Overwrite() => throw new NotImplementedException();
-        public void Combine() => throw new NotImplementedException();
-        public void AddExercise() => throw new NotImplementedException();
+        public void Overwrite(WorkoutEntry entry)
+        {
+            if (!entries.ContainsKey(entry.EntryDate))
+                throw new ArgumentException("Item to overwrite doesn't exist: " + nameof(entry));
+            entries[entry.EntryDate] = entry;
+        }
 
+        public void AddOrOverwrite(WorkoutEntry entry)
+        {
+            if (entries.ContainsKey(entry.EntryDate))
+                Overwrite(entry);
+            else
+                Add(entry);
+        }
+        //public void Combine() => throw new NotImplementedException();
+        public void AddExercise(ExerciseEntry entry) => throw new NotImplementedException();
+        public void OverwriteExercise(ExerciseEntry entry) => throw new NotImplementedException();
+
+        public bool Contains(DateTime date) => throw new NotImplementedException();
 
         //Interface implements
         public int Count => entries.Count;
@@ -26,13 +41,17 @@ namespace WorkoutTracker
 
         public void Add(WorkoutEntry item)//TODO
         {
-            throw new NotImplementedException();
+            if (entries.ContainsKey(item.EntryDate))
+                throw new ArgumentException("Duplicate item: " + nameof(item));
+            entries.Add(item.EntryDate, item);
         }
 
         public WorkoutEntry this[DateTime date]//TODO
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            //TODO: add local error handling and exception info
+            get => entries[date];
+            
+            set => entries[date] = value;
         }
 
         public WorkoutEntry this[int i] //TODO: from? latest date

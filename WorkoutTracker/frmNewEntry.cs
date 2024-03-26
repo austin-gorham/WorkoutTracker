@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ namespace WorkoutTracker
     {
         private WorkoutEntry? woEntry = null;
         SortedSet<DateTime>? datesExistingEntries = null;
+
+        private WorkoutLog? log = null;
 
         public frmNewEntry()
         {
@@ -37,6 +40,9 @@ namespace WorkoutTracker
             }
         }
 
+        
+
+
         /// <summary>
         /// function to call to get a new WorkoutEntry object created from this form;
         /// takes list of dates to check if new entry will overwrite existing
@@ -45,12 +51,13 @@ namespace WorkoutTracker
         /// </summary>
         /// <param name="dates">dates to check against if already exist and warn user of overwrite; pass null to bypass check</param>
         /// <returns>the WorkoutEntry if saved; null if form was cancelled</returns>
-        public WorkoutEntry GetNewEntry(IList<DateTime>? dates)
+        public WorkoutLog AddNewEntryToLog(WorkoutLog log)
         {
-            if (dates != null)
-                this.datesExistingEntries = new SortedSet<DateTime>(dates);
+            //if (log == null)
+                //throw new ArgumentNullException(nameof(log));
+            this.log = log;
             this.ShowDialog();
-            return woEntry!;
+            return log;
         }
 
         /// <summary>
@@ -63,8 +70,10 @@ namespace WorkoutTracker
         /// <param name="e"></param>
         private void btnSave_Click(object sender, EventArgs e)
         {
+            
             if (IsDataValid() && shouldSaveEntry())
             {
+
                 //WorkoutEntry property initialization
                 woEntry = new()
                 {
@@ -84,6 +93,12 @@ namespace WorkoutTracker
                         (WeightUnit)cbbExerciseWeightUnit.SelectedIndex)
                 });
 
+
+                //Creates new log if null;
+                //shouldn't be needed but in case, would rather save information than discard
+                this.log ??= [];
+                log.AddOrOverwrite(woEntry);
+                
                 this.Close();
             }
         }
@@ -96,8 +111,8 @@ namespace WorkoutTracker
         /// <returns>whether or not an entry should be saved based on another entry having a date, and whether user wants to overwrite</returns>
         private bool shouldSaveEntry()
         {
-            if (datesExistingEntries is not null && 
-                datesExistingEntries.Contains(dtpWorkoutDate.Value.Date))
+            if (log is not null && 
+                log.Contains(dtpWorkoutDate.Value.Date))
             {
                     return DialogResult.Yes ==
                         MessageBox.Show(

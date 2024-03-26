@@ -19,7 +19,7 @@ namespace WorkoutTracker
 
         const string sep = ",";
 
-        public static WorkoutLog getEntries() 
+        public static WorkoutLog GetEntries() 
         {
             WorkoutLog entries = new();
 
@@ -72,7 +72,7 @@ namespace WorkoutTracker
         }
 
         //TODO: swap over to workout log?
-        public static void saveEntries(IEnumerable<WorkoutEntry> entries)
+        public static void SaveEntries(IEnumerable<WorkoutEntry> entries)
         {
             using (StreamWriter woWriter = new(
                 new FileStream(woEntryPath, FileMode.Create, FileAccess.Write)))

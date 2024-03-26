@@ -16,7 +16,7 @@ namespace WorkoutTracker
 
         private void frmLogManager_Load(object sender, EventArgs e)
         {
-            entries = EntryDB.getEntries();
+            entries = EntryDB.GetEntries();
             UpdateLogView();
         }
 
@@ -31,18 +31,11 @@ namespace WorkoutTracker
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmNewEntry newEntryForm = new();
-            
-            if (newEntryForm.GetNewEntry(entries.Keys) is WorkoutEntry entry)
-            {
-                //Update entry if date exists, otherwise add new
-                if (entries.ContainsKey(entry.EntryDate) )
-                    entries[entry.EntryDate] = entry;
-                else
-                    entries.Add(entry.EntryDate,entry);
-                
-                this.UpdateLogView();
-                EntryDB.saveEntries(entries.Values);
-            }
+
+            this.entries = newEntryForm.AddNewEntryToLog(entries);
+            this.UpdateLogView();
+            EntryDB.SaveEntries(entries);
+
         }
 
         /// <summary>
@@ -51,8 +44,8 @@ namespace WorkoutTracker
         private void UpdateLogView()
         {
             lstExerciseLog.Items.Clear();
-            foreach (KeyValuePair<DateTime,WorkoutEntry> entry in entries)
-                lstExerciseLog.Items.Add(entry.Value.ToString());
+            foreach (WorkoutEntry entry in entries)
+                lstExerciseLog.Items.Add(entry.ToString());
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
