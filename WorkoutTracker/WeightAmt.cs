@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,7 +18,10 @@ namespace WorkoutTracker
         /// </summary>
         public enum WeightUnit
         {
+            //I think if you add this description decorator on each enum, when you do a WeightUnit.GRAMS.ToString() it will return the description text... I think
+            [Description("g")]
             GRAMS,
+            [Description("kg")]
             KILOGRAMS,
             OUNCES,
             POUNDS
@@ -98,6 +102,7 @@ namespace WorkoutTracker
         }
 
         public override string ToString() =>
+            //There is a description decorator on the enum now I think that would do this for you, see above
             $"{this.Amount}{ this.unit switch {
                 WeightUnit.GRAMS => "g",
                 WeightUnit.KILOGRAMS => "kg",
