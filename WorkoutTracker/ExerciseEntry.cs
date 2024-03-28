@@ -30,7 +30,10 @@ namespace WorkoutTracker
             get => name;
             set
             {
-                if (value == String.Empty)
+                // if (value == String.Empty)
+                //This is more performant cause in the above one String.Empty will create a new empty string in memory to compare it to every time vs just checking to see if the value is null or empty,
+                //also if the string was straight null and gets evaluated it would still cause a blow up I think
+                if(string.IsNullOrEmpty(value))
                     throw new ArgumentException("Must not be empty",nameof(Name));
                 name = value;
             }

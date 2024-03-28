@@ -48,6 +48,11 @@ namespace WorkoutTracker
             if (entries.ContainsKey(item.EntryDate))
                 throw new ArgumentException("Duplicate item: " + nameof(item));
             entries.Add(item.EntryDate, item);
+            
+            //This looks kooler and prally is a bit more performant cause it doesnt need to scan the list and check first it just assumes success then throws
+            //the error if there is a problem. THough hypothetically it could be a diff problem
+            // if (!entries.TryAdd(item.EntryDate, item))
+            //     throw new ArgumentException("Duplicate item: " + nameof(item));
         }
 
         public WorkoutEntry this[DateTime date]//TODO
