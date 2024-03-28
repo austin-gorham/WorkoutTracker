@@ -12,14 +12,16 @@ using static WorkoutTracker.WeightAmt;
 
 namespace WorkoutTracker
 {
-    public partial class frmNewEntry : Form
+    public partial class frmEntryEditor : Form
     {
         private WorkoutEntry? woEntry = null;
         SortedSet<DateTime>? datesExistingEntries = null;
 
         private WorkoutLog? log = null;
 
-        public frmNewEntry()
+        private bool wasLogChanged = false;
+
+        public frmEntryEditor()
         {
             InitializeComponent();
         }
@@ -51,13 +53,18 @@ namespace WorkoutTracker
         /// </summary>
         /// <param name="dates">dates to check against if already exist and warn user of overwrite; pass null to bypass check</param>
         /// <returns>the WorkoutEntry if saved; null if form was cancelled</returns>
-        public WorkoutLog AddNewEntryToLog(WorkoutLog log)
+        public bool AddNewEntryToLog(ref WorkoutLog log)
         {
-            //if (log == null)
-                //throw new ArgumentNullException(nameof(log));
             this.log = log;
             this.ShowDialog();
-            return log;
+            return wasLogChanged;
+        }
+
+
+        internal bool UpdateEntryToLog(ref WorkoutLog log, int selectedIndex)
+        {
+            this.log = log;
+            return wasLogChanged;
         }
 
         /// <summary>
@@ -98,6 +105,7 @@ namespace WorkoutTracker
                 //shouldn't be needed but in case, would rather save information than discard
                 this.log ??= [];
                 log.AddOrOverwrite(woEntry);
+                wasLogChanged = true;
                 
                 this.Close();
             }
@@ -194,5 +202,7 @@ namespace WorkoutTracker
             }
             return true;
         }
+
+
     }
 }

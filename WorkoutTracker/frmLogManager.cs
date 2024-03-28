@@ -30,11 +30,13 @@ namespace WorkoutTracker
         /// <param name="e"></param>
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            frmNewEntry newEntryForm = new();
+            frmEntryEditor newEntryForm = new();
 
-            this.entries = newEntryForm.AddNewEntryToLog(entries);
-            this.UpdateLogView();
-            EntryDB.SaveEntries(entries);
+            if (newEntryForm.AddNewEntryToLog(ref entries))
+            {
+                this.UpdateLogView();
+                EntryDB.SaveEntries(entries);
+            }
 
         }
 
@@ -50,9 +52,22 @@ namespace WorkoutTracker
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            
+            frmEntryEditor newEntryForm = new();
+
+
+            if (newEntryForm.UpdateEntryToLog(ref entries, lstExerciseLog.SelectedIndex))
+            {
+                this.UpdateLogView();
+                EntryDB.SaveEntries(entries);
+            }
+
         }
 
-
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            entries.RemoveAt(lstExerciseLog.SelectedIndex);
+            EntryDB.SaveEntries(entries);
+            UpdateLogView();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace WorkoutTracker
 {
-    partial class frmNewEntry
+    partial class frmEntryEditor
     {
         /// <summary>
         /// Required designer variable.

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace WorkoutTracker
 {
+    //TODO: implement exceptions properly
+    //right now i'm letting them bubble up from the sorted list because it's easier
+    //but that implementation should be hidden afaik
     public class WorkoutLog : IEnumerable<WorkoutEntry>, ICollection<WorkoutEntry>
     {
         private SortedList<DateTime,WorkoutEntry> entries;
@@ -32,7 +35,8 @@ namespace WorkoutTracker
         public void AddExercise(ExerciseEntry entry) => throw new NotImplementedException();
         public void OverwriteExercise(ExerciseEntry entry) => throw new NotImplementedException();
 
-        public bool Contains(DateTime date) => throw new NotImplementedException();
+        public bool Contains(DateTime date) => 
+            entries.ContainsKey(date);
 
         //Interface implements
         public int Count => entries.Count;
@@ -60,15 +64,12 @@ namespace WorkoutTracker
             set => throw new NotImplementedException();
         }
 
-        public void Clear()
-        {
+        public void Clear() =>
             entries.Clear();
-        }
+        
 
-        public bool Contains(WorkoutEntry item)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Contains(WorkoutEntry item) =>
+            entries.Contains(new KeyValuePair<DateTime,WorkoutEntry> (item.EntryDate, item));
 
         public void CopyTo(WorkoutEntry[] array, int arrayIndex)
         {
@@ -77,13 +78,16 @@ namespace WorkoutTracker
 
         public IEnumerator<WorkoutEntry> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (var entry in entries)
+                yield return entry.Value;
         }
 
-        public bool Remove(WorkoutEntry item)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Remove(WorkoutEntry item) =>
+            entries.Remove(item.EntryDate);
+        
+
+        public void RemoveAt(int index) =>
+            entries.RemoveAt(index);
 
         IEnumerator IEnumerable.GetEnumerator()
         {

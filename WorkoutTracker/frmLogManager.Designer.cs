@@ -72,6 +72,7 @@ namespace WorkoutTracker
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // frmLogManager
             // 
